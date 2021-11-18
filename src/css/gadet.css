@@ -1,0 +1,27 @@
+.gadet{
+    display: grid;
+    width: 300px;
+    height: 100px;
+    grid-template-rows: 80% 20%;
+    gap: 0.5rem;
+}
+.gadet__bg{
+    background-color: rgb(78, 36, 175);
+    border-radius: 90%;
+}
+.name--section{
+    font-size: 2rem;
+    color: aliceblue;
+}
+.center {
+    text-align: center;
+}
+.gadet--number{
+    font-size: 2rem;
+}
+
+body {
+    background-color: rgba(255, 69, 0, 0);
+    margin: 0px auto;
+    overflow: hidden;
+  }

@@ -1,0 +1,77 @@
+:root{
+    --blanco: #fff;
+}
+
+/* generales */
+    body{
+        background-color: #24323a;
+    }
+    p{
+        font-family: 'Poppins', sans-serif; 
+        font-size: 1.2rem;
+        color: var(--blanco);
+    }
+    h2{
+        color: var(--blanco);
+        font-family: 'Roboto Condensed', sans-serif;
+        font-size: 2rem;
+    }
+
+/* ___________________.,-.-,-,.-.-.-,,-. */
+.contenedor{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    border-color: beige;
+    gap: 1rem;
+}
+
+.r_contenedor{
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    border-color: beige;
+    gap: 1rem;
+}
+
+.seccion_dividida{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 1rem;
+}
+.contenido__principial {
+    padding: 1rem;
+}
+.header{
+    text-align: center;
+}
+.header__titulo {
+    font-family: 'Poppins', sans-serif;
+    color: var(--blanco);
+}
+.formulario {
+    display: grid;
+    grid-template-rows: repeat(3,1fr);
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 90%;
+}
+.fondoElemento {
+    background-color: #537081;
+    border-radius: 2%;
+}
+.contenido__principial--texto{
+    text-align: center;
+}
+
+.estado {
+    padding: 1rem;
+    line-height: 2rem;
+}
+
+/* decorativos */
+
+.borde {
+    border-style: none solid;
+    border-width: 2px;
+    border-color: rgb(39, 24, 51);
+    padding: 0.5rem;
+}

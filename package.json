@@ -1,0 +1,18 @@
+{
+  "name": "encuestas",
+  "version": "0.0.1",
+  "description": "es un codigo para votar entre varias personas en un directo de obs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
