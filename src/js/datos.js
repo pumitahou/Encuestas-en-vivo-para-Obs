@@ -1,12 +1,12 @@
-var button = document.querySelector(".formulario__button");
-var estadoID = document.querySelector('.estado--id');
-var estadoNombre = document.querySelector('.estado--nombre');
-var estadoEstado = document.querySelector(".estado--estado");
-button.addEventListener('click', function () {
-    var formularioName = document.querySelector(".formulario__nombre");
-    var formularioID = document.querySelector(".formulario__id");
-    var secretCode = document.querySelector(".formulario__secret");
-    var formulario = {
+const button = document.querySelector(".formulario__button");
+const estadoID = document.querySelector('.estado--id');
+const estadoNombre = document.querySelector('.estado--nombre');
+const estadoEstado = document.querySelector(".estado--estado");
+button.addEventListener('click', () => {
+    let formularioName = document.querySelector(".formulario__nombre");
+    let formularioID = document.querySelector(".formulario__id");
+    let secretCode = document.querySelector(".formulario__secret");
+    const formulario = {
         name: formularioName.value,
         id: formularioID.value,
         calification: 0
@@ -19,13 +19,13 @@ button.addEventListener('click', function () {
     AddUser(document.URL, secretCode.value, formulario);
 });
 function AddUser(url, code, formulario) {
-    var urlFull = url + "/" + code;
+    let urlFull = `${url}/${code}`;
     fetch(urlFull, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formulario)
-    }).then(function (res) {
-        estadoEstado.textContent = window.location.host + "/gadet?" + formulario.id;
+    }).then(res => {
+        estadoEstado.textContent = `${window.location.host}/gadet?${formulario.id}`;
         console.log(res);
     });
 }

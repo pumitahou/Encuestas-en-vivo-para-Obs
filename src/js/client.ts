@@ -1,13 +1,15 @@
-let buttons = document.querySelectorAll(".botonera--botton")
+const clientButton = document.querySelector(".boton__mandar") as HTMLButtonElement;
 let id_arg = window.location.search.substring(1);
-let socket = io.connect('http://localhost:8080',{'forceNew':true})
-for (let index = 1; index <= buttons.length; index++) {
-    buttons[index].addEventListener('click',function(){
-        let calification_dat = 9-index;
-        socket.emit("setcalification",{
-            id:id_arg,
-            calification:calification_dat
-        })
-    },false)
-}
+let socketClient = io.connect(window.location.hostname + ":8080",{'forceNew':true})
 console.log("okey")
+
+//este codigo manda la calificacion al socket
+clientButton.addEventListener('click', function () {
+    let calificationInput = document.querySelector(".calificacion") as HTMLInputElement;
+    let calification_dat = calificationInput.value;
+    socketClient.emit("setcalification",{
+        id:id_arg,
+        calification:calification_dat
+    })
+})
+

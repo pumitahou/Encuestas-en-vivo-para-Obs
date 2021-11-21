@@ -1,7 +1,9 @@
-var button = document.querySelector(".formulario__button");
-var estadoID = document.querySelector('.estado--id');
-var estadoNombre = document.querySelector('.estado--nombre');
-var estadoEstado = document.querySelector(".estado--estado")
+const button = document.querySelector(".formulario__button") as HTMLButtonElement;
+const estadoID = document.querySelector('.estado--id') as HTMLInputElement;
+const estadoNombre = document.querySelector('.estado--nombre') as HTMLInputElement;
+const estadoEstado = document.querySelector(".estado--estado") as HTMLInputElement;
+
+
 button.addEventListener('click',()=>{
     let formularioName = document.querySelector(".formulario__nombre") as HTMLInputElement;
     let formularioID = document.querySelector(".formulario__id") as HTMLInputElement;
@@ -18,6 +20,7 @@ button.addEventListener('click',()=>{
     console.log(formulario)
     AddUser(document.URL,secretCode.value,formulario);
 })
+
 
 function AddUser(url,code,formulario){
     let urlFull = `${url}/${code}`

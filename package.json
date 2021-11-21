@@ -1,10 +1,12 @@
 {
   "name": "encuestas",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "es un codigo para votar entre varias personas en un directo de obs",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx tsc ./src/js/client.ts ./src/js/datos.ts --target es6",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
