@@ -5,18 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/socket.io/socket.io.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/gadet.css">
     <title>Document</title>
 </head>
 <body>
     <div class="gadet">
-        <div class="gadet__bg center">
-            <p class="gadet--number center">null</p>
-        </div>
-        <div class="gadet__name">
-            <p class="name--section center">Name</p>
+        <div class="number--bg">
+            <div class="gadet__bg center number--bg__internal">
+                <p class="gadet--number center">null</p>
+            </div>
         </div>
         
+        <div class="gadet__name text--bg">
+            <p class="name--section center">Name</p>
+        </div>
     </div>
 
     <script src="js/gadet.js"></script>
