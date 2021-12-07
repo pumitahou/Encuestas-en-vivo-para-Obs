@@ -5,7 +5,14 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const port = 8080;
+const password="1234"
 
+const Errors = {
+    "dont exist":{error:{message:"this id dont exist"}},
+    "exist":{error:{message:"ya existe"}},
+    "incorrect password":{error:{message:"no puedes entrar, la contraseña no es correcta"}},
+    "incorrect data":{error:{message:"error no introduciste los valores correctos"}}
+}
 app.use(express.static('src'))
 
 const list = [new usuarios("example",1,0)]
@@ -32,13 +39,19 @@ function ExistID(listaDeusuarios,number){
 }
 // console.log(ExistID(list,1))
 
+// este segmento de codigo limita en ciertos rangos un valor como por ejemplo metes el valor de 10, pero el clamp esta en 1 a 5, de resultado de dara 5
+// y en el caso de -423 te dara 1
+
+//refactorizar
 function clamp(num, min, max) {
-    return num <= min 
-      ? min 
-      : num >= max 
-        ? max 
-        : num
-  }
+    if(num < min){
+        num=min
+    }
+    if(num > max){
+        num = max
+    }
+    return num
+}
 
 app.get('/',(req,res) => {
     res.sendFile(path.join(__dirname,'src/index.html'));
@@ -56,9 +69,10 @@ app.get('/gadet',(req,res)=>{
 app.get('/client',(req,res)=>{
     res.sendFile(path.join(__dirname,'src/client.html'))
 })
+
 app.post('/crear/:password',(req,res)=>{
     // remember change the password
-    if(req.params.password=="1234"){
+    if(req.params.password==password){
         let validacion = new usuarios();
         let newUserequest = req.body
         if(validacion.validar(newUserequest)){
@@ -84,11 +98,7 @@ app.post('/crear/:password',(req,res)=>{
             }
             if(existUser){
                 console.log("ya existe")
-                res.json({
-                    error:{
-                        message:"ya existe"
-                    }
-                })
+                res.json(Errors["exist"])
             } else {
                 list.push(tempUserrequest)
                 res.json({
@@ -98,22 +108,14 @@ app.post('/crear/:password',(req,res)=>{
                 })
             }
         } else {
-            res.json({
-                error:{
-                     message:"error no introduciste los valores correctos"
-                 }
-             })
+            res.json(Errors["incorrect data"])
         }
 
 
 
         
     } else {
-        res.json({
-           error:{
-                message:"no puedes entrar, la contraseña no es correcta"
-            }
-        })
+        res.json(Errors["incorrect password"])
     }
 })
 
@@ -133,16 +135,11 @@ io.on('connection',(socket)=>{
     //esta funcion lo que hace es devolver el valor de un usuario de la variable list que es la lista de los usuarios
 
     socket.on('getdata',data => {
-        let dataId = data.infoId
-        let index= ExistID(list,dataId);
-        if(ExistID(list,dataId)>=0){
+        let index = ExistID(list,data.infoId);
+        if(index>=0){
             socket.emit('data',list[index]);
         } else {
-            socket.emit('data',{
-                error:{
-                    message:"this id doesn't exist"
-                }
-            });    
+            socket.emit('data',Errors["dont exist"]);    
         }
     })
 
@@ -159,11 +156,7 @@ io.on('connection',(socket)=>{
             
             list[index].calification = request.calification
         } else {
-            socket.emit('data',{
-                error:{
-                    message:"this id doesn't exist"
-                }
-            })
+            socket.emit('data',Errors["dont exist"])
         }
     })
 })
