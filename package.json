@@ -1,6 +1,6 @@
 {
   "name": "encuestas",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "es un codigo para votar entre varias personas en un directo de obs",
   "main": "app.js",
   "scripts": {

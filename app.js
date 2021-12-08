@@ -49,9 +49,9 @@ app.get('/client',(req,res)=>{
 app.post('/crear/:password',(req,res)=>{
     // remember change the password
     if(req.params.password==password){
-
+        let newUserequest = req.body
         if(list[newUserequest.id]==undefined){
-            let newUserequest = req.body
+            
             let tempUserrequest = new usuarios(newUserequest.name,newUserequest.id,newUserequest.calification);
             list[newUserequest.id]=tempUserrequest
             res.json[okeyMessages["Okey"]]
