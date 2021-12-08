@@ -89,7 +89,7 @@ io.on('connection',(socket)=>{
     socket.on('setcalification',data => {
         let request={
             id:data.id,
-            calification:data.calification
+            calification:parseInt(data.calification)
         };
         request.calification = clamp(request.calification,0,10);
         console.log(request)

@@ -8,6 +8,6 @@ clientButton.addEventListener('click', function () {
     let calification_dat = calificationInput.value;
     socketClient.emit("setcalification", {
         id: id_arg,
-        calification: calification_dat
+        calification: parseInt(calification_dat)
     });
 });
