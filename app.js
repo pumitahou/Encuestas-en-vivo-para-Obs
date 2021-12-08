@@ -16,16 +16,8 @@ const okeyMessages = {
     "Okey":"okey"
 }
 app.use(express.static('src'))
-const list = [new usuarios("example",1,0)]
+const list = {}
 app.use(express.json())
-function ExistID(listaDeusuarios,number){
-    for(let index = 0; index<listaDeusuarios.length;index++){
-        if(listaDeusuarios[index].id==number){
-            return index
-        }
-    }
-    return -1;
-}
 // este segmento de codigo limita en ciertos rangos un valor como por ejemplo metes el valor de 10, pero el clamp esta en 1 a 5, de resultado de dara 5
 // y en el caso de -423 te dara 1
 function clamp(num, min, max) {
@@ -42,7 +34,6 @@ app.get('/',(req,res) => {
     res.sendFile(path.join(__dirname,'src/index.html'));
 });
 
-
 app.get('/crear',(req,res) => {
     // res.sendFile(path.join(__dirname,'src/js/datos.js'))
     res.sendFile(path.join(__dirname,'src/panel.html'));
@@ -58,13 +49,19 @@ app.get('/client',(req,res)=>{
 app.post('/crear/:password',(req,res)=>{
     // remember change the password
     if(req.params.password==password){
-        let newUserequest = req.body
-        let tempUserrequest = new usuarios(newUserequest.name,newUserequest.id,newUserequest.calification);
-        list.push(tempUserrequest)
-        res.json[okeyMessages["Okey"]]
+
+        if(list[newUserequest.id]==undefined){
+            let newUserequest = req.body
+            let tempUserrequest = new usuarios(newUserequest.name,newUserequest.id,newUserequest.calification);
+            list[newUserequest.id]=tempUserrequest
+            res.json[okeyMessages["Okey"]]
+            return
+        }
+        res.json(Errors["exist"])
         return
     }
     res.json(Errors["incorrect password"])
+    console.log(list)
     return
 })
 
@@ -83,12 +80,11 @@ io.on('connection',(socket)=>{
     //esta funcion lo que hace es devolver el valor de un usuario de la variable list que es la lista de los usuarios
 
     socket.on('getdata',data => {
-        let index = ExistID(list,data.infoId);
-        if(index>=0){
-            socket.emit('data',list[index]);
-        } else {
-            socket.emit('data',Errors["dont exist"]);    
+        if(data.infoId!=undefined){
+            socket.emit('data',list[data.infoId]);
+            return
         }
+        socket.emit('data',Errors["dont exist"]);    
     })
     socket.on('setcalification',data => {
         let request={
@@ -97,13 +93,13 @@ io.on('connection',(socket)=>{
         };
         request.calification = clamp(request.calification,0,10);
         console.log(request)
-        let index = ExistID(list,request.id);
-        if(index>=0){
-            
-            list[index].calification = request.calification
-        } else {
-            socket.emit('data',Errors["dont exist"])
+
+        if(list[request.id]!=undefined){
+            list[request.id].calification = request.calification
+            return
         }
+        socket.emit('data',Errors["dont exist"])
+        return
     })
 })
 
