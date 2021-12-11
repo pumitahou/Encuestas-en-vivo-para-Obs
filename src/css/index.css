@@ -1,0 +1,31 @@
+:root{
+    --principal:rgb(139, 209, 118);
+    --secundario:rgb(0, 122, 61);
+    --padding-navegacion: 1rem;
+}
+.nav{
+    padding: 0.3rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-around;
+}
+.nav--background{
+    background-color: var(--secundario);
+}
+.nav__element{
+    padding: var(--padding-navegacion);
+    border-radius: 4px;
+    background-color: var(--principal);
+}
+.nav--icon{
+    padding: var(--padding-navegacion);
+    background-image: url("img/icon_png.png");
+}
+.content{
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+.image img{
+    max-width: 100%;
+    max-height: 100%;
+}
