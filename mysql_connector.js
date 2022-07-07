@@ -1,4 +1,5 @@
 const mysql = require('mysql')
+
 const config = {
     user: "root",
     password: "",
@@ -21,7 +22,7 @@ const insertar = (dominio,baneado) => {
         if(err) throw err
         console.log("sended");
     })
-    
+    console.log("sended");
 }
 const getDomainsBanneds = () => {
     let sql = `SELECT domains FROM banneddomains WHERE isbanned>0;`
@@ -30,8 +31,9 @@ const getDomainsBanneds = () => {
         todos=res
         
     })
+    console.log("GetBanneds")
     return todos
 }
-module.exports = conectar;
+module.exports = conectar
 module.exports = insertar;
 module.exports = getDomainsBanneds;

@@ -1,9 +1,11 @@
 const clientButton = document.querySelector(".boton__mandar");
 let id_arg = window.location.search.substring(1);
+var formulario = document.querySelector(".formulario");
 let socketClient = io.connect(window.location.hostname + ":8080", { 'forceNew': true });
 console.log("okey");
 //este codigo manda la calificacion al socket
-clientButton.addEventListener('click', function () {
+formulario.addEventListener('submit', (e) => {
+    e.preventDefault();
     let calificationInput = document.querySelector(".calificacion");
     let calification_dat = calificationInput.value;
     socketClient.emit("setcalification", {

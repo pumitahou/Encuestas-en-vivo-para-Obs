@@ -1,42 +1,123 @@
-const conectar = require('./mysql_connector.js')
 const express = require('express');
 const usuarios = require('./users.js')
 const path = require('path');
-const insertar = require('./mysql_connector.js');
-const getDomainsBanneds = require('./mysql_connector.js');
 const session = require('express-session');
+const sqlSeccion = require('express-mysql-session');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const port = 8080;
 const password="1234"
 const TWO_Hours = 1000 * 60 *60 *2
+const { createHash } = require('crypto');
 //test
+const mysql = require('mysql');
+let todos;
+const config = {
+    user: "root",
+    password: "",
+    server: "127.0.0.1",
+    database: "midatabase",
+    port: "3306"
 
-conectar()
+}
+const sessionStore =new sqlSeccion(config);
+
+const connector = mysql.createConnection(config);
+
+function hash(string) {
+    return createHash('sha256').update(string).digest('hex');
+}
+
+const conectar = ()=> {
+    connector.connect(err => {
+        if(err) throw err
+        console.log("coneccion establecida")
+    })
+}
+const insertar = (dominio,baneado) => {
+    let sql = `INSERT INTO banneddomains (domains,isbanned) VALUES("${dominio}","${baneado}");`
+    connector.query(sql,(err,res,field)=>{
+        if(err) throw err
+        console.log("sended");
+    })
+    console.log("sended");
+}
+const getDomainsBanneds = () => {
+    let sql = `SELECT * FROM banneddomains WHERE isbanned>0;`
+    return new Promise(resolve=>{
+        connector.query(sql,(err,res,field)=>{
+            if(err) throw err
+            resolve(res)
+        })
+    })
+}
+function getUserWithMail(mail){
+    //TODO: recuerda parsear el string que recive la funcion
+    let sql = `SELECT * FROM clients WHERE email="${mail}";`
+    return new Promise(resolve=>{
+        connector.query(sql,(err,res,field)=>{
+            if(err) throw err
+            resolve(res)
+        })
+    })
+}
+function VerifyUser(email,password){
+    let correoparseado = email.replace(/['"` // \\;]/g, '').toLowerCase() 
+    console.log(correoparseado)
+    let sql = `SELECT * FROM clients WHERE email="${correoparseado}";`
+    let isValid = false;
+    return new Promise(resolve => {
+        connector.query(sql,(err,res,field)=>{
+            if(err) throw err
+            
+            if(res==0){
+                isValid = false
+            } else {
+                let passwordhash =hash(password) 
+                let respuestasql = res[0];
+                if(passwordhash === respuestasql['password']){
+                    isValid = true
+
+                    
+                }
+            }
+
+            resolve(isValid)
+        })
+        
+    }
+    )
+}
+
+
+//TODO: aqui comienza el codigo
 
 app.use(session({
-    name: 'sid',
+    key:'coockie_usuario',
+    secret: '123213232131242132132',
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    secret: 'secreta',
-    cookie:{
-        maxAGE:TWO_Hours,
-        sameSite:true,
-        secure: 'development'
+    cookie: {
+        maxAge  : new Date(Date.now() + TWO_Hours), //1 Hour
+        expires : new Date(Date.now() + TWO_Hours), //1 Hour
     }
 }))
 
 app.get('/ban/:dominio/:condition',(req,res)=>{
-    insertar("randomdadfdfadfdf.exe","0").se
+    insertar("alguntest","1")
     res.send("inserted");
 })
-app.get('/getbanneds',(req,res)=>{
+
+
+app.get('/getbanneds', async (req,res)=>{
     let html = "";
-    let response = getDomainsBanneds()
+    res.header(200)
+    let response = await getDomainsBanneds()
     for(let i=0; i<response.length;i++){
         domain=response[i]
-        html+=`<p>${domain["domains"]}</p>`
+        html+=`<p>${domain['domains']} ${domain["isbanned"]}</p>`
     }
     res.send(html);
 })
@@ -48,7 +129,8 @@ const Errors = {
     "dont exist":{error:{message:"this id dont exist"}},
     "exist":{error:{message:"ya existe"}},
     "incorrect password":{error:{message:"no puedes entrar, la contraseña no es correcta"}},
-    "incorrect data":{error:{message:"error no introduciste los valores correctos"}}
+    "incorrect data":{error:{message:"error no introduciste los valores correctos"}},
+    "ErrorLogin":{error:{message:"Error la contraseña o el correo mal puesto"}}
 }
 const okeyMessages = {
     "Okey":"okey"
@@ -56,7 +138,6 @@ const okeyMessages = {
 
 app.use(express.static('src'))
 // app.use(express.static(path.join(__dirname, 'src')))
-console.log()
 const list = {}
 app.use(express.json())
 
@@ -73,17 +154,65 @@ function clamp(num, min, max) {
 }
 
 
-app.get('/',(req,res) => {
-    res.sendFile(path.join(__dirname,'src/index.html'));
+// app.get('/',(req,res) => {
+//     req.session.usuario = "juanperez"
+//     req.session.rol = "acmin"
+//     req.session.visitas = req.session.visitas ? ++req.session.visitas : 1
+//     console.log(req.session)
+//     res.send(`<p> ${req.session.usuario}</p>`)
+//     // res.sendFile(path.join(__dirname,'src/index.html'));
+// });
+
+app.get('/cocckie',(req,res) => {
+    console.log(req.session.userID)
+    req.session.usuario = req.connection.remoteAddress
+    req.session.rol = "acmin"
+    req.session.visitas = req.session.visitas ? ++req.session.visitas : 1
+    req.session.userID = 1;
+    res.send(`<p> ${req.session.usuario} entro este numero de veces ${req.session.visitas}</p>`)
+    // res.sendFile(path.join(__dirname,'src/index.html'));
 });
+
 
 app.get('/login',(req,res)=>{
     res.sendFile(path.join(__dirname,'src/login.html'))
 })
 
-app.post('/login',(req,res)=>{
-    console.log(req.body)
-    res.send("ok")
+app.get('/dashboard',(req,res)=>{
+    if(req.session.isAuth){
+        res.send(`Welcome ${req.session.name}`)
+    } else {
+        res.redirect("/login")
+    }
+})
+
+app.post('/login',async (req,res)=>{
+    //TODO:La funcion tiene que estar echa para evitar inyectciones sql
+    /*TODO:
+    esta opcion lo que hace es crear una session que funciona como validador de la pagina web
+
+    1. email
+    2. name
+    3. hash
+    */
+    const respuesta = req.body
+    const email = respuesta['name'].replace(/['"` // \\;]/g, '').toLowerCase()
+    if(respuesta['name']===undefined || respuesta['password']===undefined){
+        res.json(Errors['ErrorLogin']);
+        return;
+    }
+    let validation = await VerifyUser(email,respuesta['password'])
+    if(validation || req.session.isAuth === false){
+        let objectsession = await getUserWithMail(email);
+        let objeto = objectsession[0]
+        req.session.isAuth = true
+        req.session.email = objeto['email']
+        req.session.name = objeto['name']
+        req.session.hash = objeto['password']
+        res.redirect("/login")   
+    }
+    res.send(validation)
+    
 })
 
 app.get('/crear',(req,res) => {
@@ -97,7 +226,10 @@ app.get('/gadet',(req,res)=>{
 app.get('/client',(req,res)=>{
     res.sendFile(path.join(__dirname,'src/client.html'))
 })
-
+app.get('/logout',(req,res)=>{
+    req.session.isAuth = false;
+    res.redirect("/")
+})
 app.post('/crear/:password',(req,res)=>{
     // remember change the password
     if(req.params.password==password){
@@ -137,6 +269,7 @@ io.on('connection',(socket)=>{
 
     socket.on('getdata',data => {
         if(data.infoId!=undefined){
+            console.log(socket.handshake.address)
             socket.emit('data',list[data.infoId]);
             return
         }
@@ -158,6 +291,7 @@ io.on('connection',(socket)=>{
         return
     })
 })
+
 
 server.listen(port,()=>{
     console.log(`listening in port: ${port} .`);
