@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.link{
+    @apply text-white block p-5 font-bold hover:text-yellow-400
+}
+
+.tagsavaible{
+    @apply grid grid-cols-1 gap-5 bg-slate-100
+}
+
+.elemento{
+    @apply bg-slate-600 rounded-3xl max-w-xl pt-7 pb-7 pl-5 pr-5
+}

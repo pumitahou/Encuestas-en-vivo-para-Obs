@@ -24,10 +24,23 @@ function sendform(data){
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify(data)
     }).then(res =>{
-        console.log(res)
         mensajenotificar("enviado","espera")
+        res.text().then(x=>{
+            
+            let respuesa = JSON.parse(x)
+            if(respuesa["isValid"]){
+                window.location.href = '/dashboard';
+            } else{
+                mensajenotificar("contraseña incorrecta","error")
+            }
+            
+        }).catch(err=>{
+            mensajenotificar("Algo ha salido mal","error")
+        })
+        
     
     }).catch(err =>{
+        console.log(err)
         mensajenotificar("Algo ha salido mal","error")
     })
 }

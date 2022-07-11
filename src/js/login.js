@@ -6,8 +6,8 @@ var datos = {
 };
 formulario.addEventListener('submit', function (e) {
     e.preventDefault();
-    var name_input = document.querySelector("#name");
-    var password_input = document.querySelector("#password");
+    let name_input = document.querySelector("#name");
+    let password_input = document.querySelector("#password");
     if (name_input.value === '' || password_input.value === '') {
         mensajenotificar("Completa los campos", "error--alert");
         return;
@@ -21,19 +21,30 @@ function sendform(data) {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
-    }).then(function (res) {
-        console.log(res);
+    }).then(res => {
         mensajenotificar("enviado", "espera");
-    })["catch"](function (err) {
+        res.text().then(x => {
+            let respuesa = JSON.parse(x);
+            if (respuesa["isValid"]) {
+                window.location.href = '/dashboard';
+            }
+            else {
+                mensajenotificar("contraseña incorrecta", "error");
+            }
+        }).catch(err => {
+            mensajenotificar("Algo ha salido mal", "error");
+        });
+    }).catch(err => {
+        console.log(err);
         mensajenotificar("Algo ha salido mal", "error");
     });
 }
 function mensajenotificar(mensaje, estado) {
-    var alerta = document.createElement('P');
+    let alerta = document.createElement('P');
     alerta.classList.add(estado);
     alerta.innerText = mensaje;
     formulario_centro.appendChild(alerta);
-    setTimeout(function () {
+    setTimeout(() => {
         alerta.remove();
     }, 2000);
 }
