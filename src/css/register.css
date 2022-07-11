@@ -1,0 +1,8 @@
+.formulario{
+    background-color: antiquewhite;
+    display: grid;
+    grid-template-columns: 1;
+    gap: 3rem;
+    max-width: 500px;
+    padding:  2rem;
+}

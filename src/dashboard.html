@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"> -->
+    
+    <link rel="stylesheet" href="../../css/outdash.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="mx-auto">
+            <nav class="bg-slate-500 flex justify-between items-center lg:justify-start">
+                <div >
+                    <img src="" alt="asdf">
+                </div>
+                <div class="links lg:block hidden w-1/6 md:w-4/6">
+                    <ul class="menu flex items-center justify-center gap-5">
+                        <li><a href="/" class="link">Menu </a></li>
+                        <li><a href="dashboard" class="link">dashboard</a></li>
+                        <!-- todo: esta opcion solo cuando este logueado el usuario -->
+                        <li><a href="logout" class="link">logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main class="grid grid-cols-2">
+        <div class="gestor-de-tags">
+            <!-- aqui es donde el usuario puede crear sus tags -->
+            <div>
+                <form action="" id="formulario" class="flex">
+                    <input type="text" id="nametag" placeholder="NameToTag">
+                    <input type="submit" value="Crear">
+                </form>
+            </div>
+        </div>
+        <div class="avaibletags">
+            <!-- esta parte deve tener un scroll -->
+            <div>
+                <p>Tags</p>
+            </div>
+            <div id="tagsavaible">
+
+            </div>
+        </div>
+    </main>
+    <script src="../../js/dashboard.js"></script>
+</body>
+</html>
