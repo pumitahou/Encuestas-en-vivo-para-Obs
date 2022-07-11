@@ -73,7 +73,6 @@ function getTAGSWithMail(mail){
         connector.query(sql,(err,res,field)=>{
             if(err) throw err
             resolve(res)
-            console.log(res)
         })
     })
 }
@@ -86,17 +85,16 @@ function getTAGWithuuid(uuid){
       }
     if(delayed[uuid]!=undefined){
         let tag = delayed[uuid]
-        console.log(`undefined the tag ${tag}`)
+        
         if(Date.now()-tag["time_created"]>5000){
             delayed[uuid]=undefined
-            console.log(`deleating to delay${tag}`)
         }
         return [nulltag];
     }
 
     let uuidparsed = uuid.replace(/['"` // \\;%=]/g, '');
     let sql = `SELECT * FROM tags WHERE uuid="${uuidparsed}";`
-    console.log(sql)
+    
     return new Promise(resolve=>{
         connector.query(sql,(err,res,field)=>{
             if(err){
@@ -157,7 +155,7 @@ function registerTAG(data){
 
 function VerifyUser(email,password){
     let correoparseado = email.replace(/['"` // \\;]/g, '').toLowerCase() 
-    console.log(correoparseado)
+    
     let sql = `SELECT * FROM clients WHERE email="${correoparseado}";`
     let isValid = false;
     return new Promise(resolve => {
@@ -188,7 +186,6 @@ async function loadTag(uuid){
     if(list[uuid]===undefined){
         let tag_loaded = await getTAGWithuuid(uuid);
         if(tag_loaded!=0){
-            console.log(tag_loaded);
             let tag = tag_loaded[0]
             list[uuid] = new Usuarios(tag["tagname"],tag["uuid"],tag["value"])
         } else{
