@@ -73,10 +73,6 @@ function getTAGSWithMail(mail){
         connector.query(sql,(err,res,field)=>{
             if(err) throw err
             resolve(res)
-<<<<<<< HEAD
-            console.log(res)
-=======
->>>>>>> dccd4f3b3eca8786c3fe5f35fd151b450481eed1
         })
     })
 }
@@ -89,27 +85,16 @@ function getTAGWithuuid(uuid){
       }
     if(delayed[uuid]!=undefined){
         let tag = delayed[uuid]
-<<<<<<< HEAD
-        console.log(`undefined the tag ${tag}`)
-        if(Date.now()-tag["time_created"]>5000){
-            delayed[uuid]=undefined
-            console.log(`deleating to delay${tag}`)
-=======
         
         if(Date.now()-tag["time_created"]>5000){
             delayed[uuid]=undefined
->>>>>>> dccd4f3b3eca8786c3fe5f35fd151b450481eed1
         }
         return [nulltag];
     }
 
     let uuidparsed = uuid.replace(/['"` // \\;%=]/g, '');
     let sql = `SELECT * FROM tags WHERE uuid="${uuidparsed}";`
-<<<<<<< HEAD
-    console.log(sql)
-=======
     
->>>>>>> dccd4f3b3eca8786c3fe5f35fd151b450481eed1
     return new Promise(resolve=>{
         connector.query(sql,(err,res,field)=>{
             if(err){
@@ -170,11 +155,7 @@ function registerTAG(data){
 
 function VerifyUser(email,password){
     let correoparseado = email.replace(/['"` // \\;]/g, '').toLowerCase() 
-<<<<<<< HEAD
-    console.log(correoparseado)
-=======
-    
->>>>>>> dccd4f3b3eca8786c3fe5f35fd151b450481eed1
+
     let sql = `SELECT * FROM clients WHERE email="${correoparseado}";`
     let isValid = false;
     return new Promise(resolve => {
@@ -205,10 +186,6 @@ async function loadTag(uuid){
     if(list[uuid]===undefined){
         let tag_loaded = await getTAGWithuuid(uuid);
         if(tag_loaded!=0){
-<<<<<<< HEAD
-            console.log(tag_loaded);
-=======
->>>>>>> dccd4f3b3eca8786c3fe5f35fd151b450481eed1
             let tag = tag_loaded[0]
             list[uuid] = new Usuarios(tag["tagname"],tag["uuid"],tag["value"])
         } else{
