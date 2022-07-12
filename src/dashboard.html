@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../css/outdash.css">
     <title>Document</title>
 </head>
-<body>
+<body class="bg-slate-800">
     <header>
         <div class="mx-auto">
             <nav class="bg-slate-500 flex justify-between items-center lg:justify-start">
@@ -28,23 +28,30 @@
         </div>
     </header>
     <main class="grid grid-cols-2">
-        <div class="gestor-de-tags">
+        <div class="gestor-de-tags p-9">
             <!-- aqui es donde el usuario puede crear sus tags -->
             <div>
                 <form action="" id="formulario" class="flex">
-                    <input type="text" id="nametag" placeholder="NameToTag">
-                    <input type="submit" value="Crear">
+                    <div class="grid grid-cols-1 gap-7">
+                        <div>
+                            <input type="text" id="nametag" placeholder="NameToTag">
+                        </div>
+                        <div>
+                            <input type="submit" class="cursor-pointer bg-slate-300 hover:bg-slate-200 p-3 rounded-2xl" value="Crear">
+                        </div>
+                    </div>
+                    
+                    
                 </form>
             </div>
         </div>
-        <div class="avaibletags">
+        <div class="avaibletags  max-h-96">
             <!-- esta parte deve tener un scroll -->
             <div>
                 <p>Tags</p>
             </div>
-            <div id="tagsavaible">
-
-            </div>
+            <!-- esta parte es generada por un script -->
+            <div class="overflow-y-auto" id="tagsavaible"></div>
         </div>
     </main>
     <script src="../../js/dashboard.js"></script>

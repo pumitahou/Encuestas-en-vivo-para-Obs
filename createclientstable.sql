@@ -4,4 +4,4 @@ CREATE TABLE `clients` (
  `is_premium` tinyint(1) NOT NULL,
  `email` varchar(320) NOT NULL,
  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

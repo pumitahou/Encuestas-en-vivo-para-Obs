@@ -234,7 +234,8 @@ const Errors = {
     "incorrect password":{error:{message:"no puedes entrar, la contraseña no es correcta"}},
     "incorrect data":{error:{message:"error no introduciste los valores correctos"}},
     "ErrorLogin":{error:{message:"Error la contraseña o el correo mal puesto"}},
-    "AuthError":{error:{message:"usuario no auntetificado"}}
+    "AuthError":{error:{message:"usuario no auntetificado"}},
+    "bademail":{error:{message:"Correo no deseado"}}
 }
 const okeyMessages = {
     "Okey":"okey"
@@ -300,9 +301,17 @@ app.post('/register',async (req,res)=>{
     //     name: 'PumafFron'
     // }
     const data = req.body
-    let isSended = await registerClient(data);
-    console.log(isSended)
-    res.json({message: "okey"})
+    let emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    if(emailRegex.test(data['email'])){
+        let isSended = await registerClient(data);
+        console.log(isSended)
+        res.json({message: "okey"})
+    }else{
+        //DELETE: borrar este log con el comentario
+        console.log("bad email")
+        res.json(Errors["bademail"])
+    }
+    
 })
 
 app.get('/dashboard',(req,res)=>{
@@ -424,6 +433,10 @@ app.get("/getAllTags",async (req,res)=>{
     return;
 })
 
+app.get("/favicon.ico",(req,res)=>{
+    res.sendFile(path.join(__dirname,'src/sources/favicon.ico'));
+})
+
 //error 404 , retorna un render
 app.use(function(req, res, next) {
     res.status(404);
@@ -457,10 +470,11 @@ io.on('connection',(socket)=>{
             calification:data.calification
         };
         request.calification = clamp(request.calification,0,10);
-        console.log(request)
+
+        console.log(`set ${request}`)
 
         if(list[request.id]!=undefined){
-            list[request.id].calification = request.calification
+            list[request.id].calification = parseInt(request.calification)
             return
         }
         socket.emit('data',Errors["dont exist"])

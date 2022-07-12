@@ -1,7 +1,7 @@
 const clientButton = document.querySelector(".boton__mandar");
 let id_arg = window.location.search.substring(1);
 var formulario = document.querySelector(".formulario");
-let socketClient = io.connect(window.location.hostname + ":8080", { 'forceNew': true });
+let socketClient = io.connect(window.location.host, { 'forceNew': true });
 console.log("okey");
 //este codigo manda la calificacion al socket
 formulario.addEventListener('submit', (e) => {

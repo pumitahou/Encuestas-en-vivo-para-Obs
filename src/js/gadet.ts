@@ -1,4 +1,4 @@
-let socket = io.connect(window.location.hostname + ":8080",{'forceNew':true})
+let socket = io.connect(window.location.host,{'forceNew':true})
 //esta variable busca en el exploraror la ID
 let id = window.location.search.substring(1);
 let data2;
