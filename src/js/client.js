@@ -10,6 +10,6 @@ formulario.addEventListener('submit', (e) => {
     let calification_dat = calificationInput.value;
     socketClient.emit("setcalification", {
         id: id_arg,
-        calification: parseInt(calification_dat)
+        calification: calification_dat
     });
 });
