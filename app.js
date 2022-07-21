@@ -3,12 +3,13 @@ const usuarios = require('./users.js')
 const path = require('path');
 const session = require('express-session');
 const sqlSeccion = require('express-mysql-session');
+const morgan = require('morgan')
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const port = 8080;
+const port = 80;
 const password="1234"
-const TWO_Hours = 1000 * 60 *60 *2
+const EXPIRATION_COOKIE = 1000 * 60 *60 * 7 // Default time is 7 hours
 const { createHash ,randomUUID } = require('crypto');
 //test
 const mysql = require('mysql');
@@ -17,13 +18,13 @@ let todos;
 const config = {
     user: "root",
     password: "",
-    server: "127.0.0.1",
+    server: "mysql",
     database: "midatabase",
     port: "3306"
 
 }
 const sessionStore =new sqlSeccion(config);
-
+app.use(morgan("combined"))
 const connector = mysql.createConnection(config);
 
 function hash(string) {
@@ -203,8 +204,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge  : new Date(Date.now() + TWO_Hours), //1 Hour
-        expires : new Date(Date.now() + TWO_Hours), //1 Hour
+        maxAge  : new Date(Date.now() + EXPIRATION_COOKIE),
+        expires : new Date(Date.now() + EXPIRATION_COOKIE),
     }
 }))
 
@@ -264,14 +265,9 @@ function clamp(num, min, max) {
 }
 
 
-// app.get('/',(req,res) => {
-//     req.session.usuario = "juanperez"
-//     req.session.rol = "acmin"
-//     req.session.visitas = req.session.visitas ? ++req.session.visitas : 1
-//     console.log(req.session)
-//     res.send(`<p> ${req.session.usuario}</p>`)
-//     // res.sendFile(path.join(__dirname,'src/index.html'));
-// });
+app.get('/',(req,res) => {
+    res.sendFile(path.join(__dirname,'src/index.html'));
+});
 
 app.get('/cocckie',(req,res) => {
     console.log(req.session.userID)
@@ -440,9 +436,10 @@ app.get("/favicon.ico",(req,res)=>{
 //error 404 , retorna un render
 app.use(function(req, res, next) {
     res.status(404);
-    res.send(`<h1>gente que entro al 404 y se equivoco: ${vecesqueentra} </h1>`)
     vecesqueentra+=1
-    res.sendFile(path.join(__dirname,'./src/404.html'))
+    res.send(`<h1>gente que entro al 404 y se equivoco: ${vecesqueentra} </h1>`)
+    
+    // res.sendFile(path.join(__dirname,'./src/404.html'))
 });
 
 

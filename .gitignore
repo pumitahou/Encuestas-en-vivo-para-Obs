@@ -1,1 +1,11 @@
 node_modules/
+docker-compose.yaml
+Dockerfile
+encuestas_obs.log
+namespace.yaml
+load-balancer.yaml
+pod-instanciaapp.yaml
+obs-tagworker.yaml
+database.log
+tags-obs.yaml
+.dockerignore

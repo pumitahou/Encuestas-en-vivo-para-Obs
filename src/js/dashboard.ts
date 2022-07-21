@@ -49,14 +49,17 @@ function settagOnSection(){
                 let divParrafo = document.createElement('DIV');
                 let botonBorrar = document.createElement('DIV');
                 let parrafo = document.createElement('P');
+                let parrafo2 = document.createElement('P');
                 let nametag = document.createElement('P');
                 TAG.classList.add("elemento")
                 parrafo.classList.add("text-white")
                 parrafo.innerText = `${window.location.origin}/gadet?${gadet["uuid"]}`
+                parrafo2.innerText = `${window.location.origin}/client?${gadet["uuid"]}`
                 nametag.classList.add("nametag")
                 nametag.innerText = `${gadet["tagname"]}`
                 divParrafo.appendChild(nametag)
                 divParrafo.appendChild(parrafo)
+                divParrafo.appendChild(parrafo2)
                 
                 TAG.appendChild(divParrafo)
                 TAG.appendChild(botonBorrar)

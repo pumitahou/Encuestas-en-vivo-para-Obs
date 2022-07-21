@@ -1,14 +1,14 @@
 {
   "name": "encuestas",
-  "version": "0.0.7",
+  "version": "0.2.7",
   "description": "es un codigo para votar entre varias personas en un directo de obs",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "npx tsc ./src/js/client.ts ./src/js/datos.ts ./src/js/login.ts ./src/js/dashboard.ts --target es6",
+    "compile": "npx tsc ./src/js/client.ts ./src/js/datos.ts ./src/js/login.ts ./src/js/dashboard.ts ./src/js/gadet.ts --target es6",
     "watchtsc": "npx tsc ./src/js/client.ts ./src/js/datos.ts ./src/js/login.ts ./src/js/dashboard.ts --target es6 --watch",
     "start": "node app.js",
-    "compilecss": "npx tailwindcss -i ./src/css/dashboard.css -o ./src/css/outdash.css",
+    "compilecss": "npx tailwindcss -i ./src/css/dashboard.css -o ./src/css/outdash.css && npx tailwindcss -i ./src/css/hometail.css -o ./src/css/homepage.css",
     "watchcss": "npx tailwindcss -i ./src/css/dashboard.css -o ./src/css/outdash.css --watch"
   },
   "author": "",
@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.8",
     "express-session": "^1.17.3",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "rxjs": "^7.5.5",
     "socket.io": "^4.4.0"
