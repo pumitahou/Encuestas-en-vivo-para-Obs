@@ -9,3 +9,5 @@ obs-tagworker.yaml
 database.log
 tags-obs.yaml
 .dockerignore
+src/css/homepage.css
+src/css/outdash.css
